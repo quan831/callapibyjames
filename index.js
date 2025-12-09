@@ -41,15 +41,16 @@ app.get("/api/weather", async (req, res) => {
 
         res.json({
             name: w.name,
-            description: w.weather[0].description,
+            description: w.weather?.[0]?.description,
             temp: w.main.temp,
             humidity: w.main.humidity,
         });
     } catch (error) {
+        console.error("Lỗi gọi OpenWeather:", error.message);
         if (error.response) {
             return res
                 .status(error.response.status)
-                .json({ error: error.response.data.message });
+                .json({ error: error.response.data?.message || "Lỗi từ OpenWeather" });
         }
         res.status(500).json({ error: "Lỗi server" });
     }
