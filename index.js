@@ -1,5 +1,10 @@
+const express = require("express");
+const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
+
+const app = express();
+const PORT = 3000;
 
 const API_KEY = process.env.OPENWEATHER_API_KEY;
 
@@ -8,19 +13,19 @@ if (!API_KEY) {
     process.exit(1);
 }
 
-// Lấy city từ command line
-const city = process.argv.slice(2).join(" ");
+app.use(cors());
+app.use(express.static("public"));
 
-if (!city) {
-    console.log("Cách dùng:");
-    console.log('node index.js "Hanoi"');
-    console.log('node index.js "Ho Chi Minh"');
-    process.exit(0);
-}
+// API: GET /api/weather?city=Hanoi
+app.get("/api/weather", async (req, res) => {
+    const city = req.query.city;
 
-async function getWeather(city) {
+    if (!city) {
+        return res.status(400).json({ error: "Thiếu city" });
+    }
+
     try {
-        const res = await axios.get(
+        const response = await axios.get(
             "https://api.openweathermap.org/data/2.5/weather",
             {
                 params: {
@@ -32,20 +37,24 @@ async function getWeather(city) {
             }
         );
 
-        const w = res.data;
+        const w = response.data;
 
-        console.log(`\n📍 ${w.name}`);
-        console.log(`🌤 Thời tiết: ${w.weather[0].description}`);
-        console.log(`🌡 Nhiệt độ: ${w.main.temp}°C`);
-        console.log(`💧 Độ ẩm: ${w.main.humidity}%`);
-    } catch (err) {
-        if (err.response) {
-            console.log("Lỗi API:", err.response.data.message);
-        } else {
-            console.log("Lỗi:", err.message);
+        res.json({
+            name: w.name,
+            description: w.weather[0].description,
+            temp: w.main.temp,
+            humidity: w.main.humidity,
+        });
+    } catch (error) {
+        if (error.response) {
+            return res
+                .status(error.response.status)
+                .json({ error: error.response.data.message });
         }
+        res.status(500).json({ error: "Lỗi server" });
     }
-}
+});
 
-// chạy
-getWeather(city);
+app.listen(PORT, () => {
+    console.log(`🚀 Server chạy tại http://localhost:${PORT}`);
+});
