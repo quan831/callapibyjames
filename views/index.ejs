@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+<div class="card">
+    <h1>🌤 Weather App</h1>
+
+    <form action="/" method="GET">
+        <input
+                name="city"
+                type="text"
+                placeholder="Nhập tên thành phố (vd: Hanoi)"
+                required
+        />
+        <button type="submit">Xem</button>
+    </form>
+
+    <div class="result">
+        <% if (error) { %>
+            <p class="error">❌ <%= error %></p>
+        <% } else if (weather) { %>
+            <div class="city">📍 <%= weather.name %></div>
+            <div>🌤 <%= weather.description %></div>
+            <div>🌡 <%= weather.temp %>°C</div>
+            <div>💧 Độ ẩm: <%= weather.humidity %>%</div>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>

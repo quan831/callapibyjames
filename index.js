@@ -14,14 +14,15 @@ if (!API_KEY) {
 }
 
 app.use(cors());
-app.use(express.static("public"));
+app.set("view engine", "ejs");
+app.use(express.static("views"));
 
-// API: GET /api/weather?city=Hanoi
-app.get("/api/weather", async (req, res) => {
+// SSR Route: GET
+app.get("/", async (req, res) => {
     const city = req.query.city;
 
     if (!city) {
-        return res.status(400).json({ error: "Thiếu city" });
+        return res.render("index", { weather: null, error: null });
     }
 
     try {
@@ -38,21 +39,21 @@ app.get("/api/weather", async (req, res) => {
         );
 
         const w = response.data;
-
-        res.json({
+        const weatherData = {
             name: w.name,
             description: w.weather?.[0]?.description,
             temp: w.main.temp,
             humidity: w.main.humidity,
-        });
+        };
+
+        res.render("index", { weather: weatherData, error: null });
     } catch (error) {
         console.error("Lỗi gọi OpenWeather:", error.message);
+        let errorMsg = "Lỗi server";
         if (error.response) {
-            return res
-                .status(error.response.status)
-                .json({ error: error.response.data?.message || "Lỗi từ OpenWeather" });
+            errorMsg = error.response.data?.message || "Lỗi từ OpenWeather";
         }
-        res.status(500).json({ error: "Lỗi server" });
+        res.render("index", { weather: null, error: errorMsg });
     }
 });
 
