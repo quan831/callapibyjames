@@ -1,76 +1,66 @@
-# 🌤 Weather App (Node.js + Express)
+# 🌤 Weather App (Node.js + Express + EJS)
 
-Ứng dụng **Web Weather App** viết bằng **Node.js + Express** giúp xem **thời tiết hiện tại** của các thành phố trên thế giới thông qua giao diện web (không còn CLI), sử dụng **OpenWeatherMap API**.
+Ứng dụng **Web Weather App** này sử dụng **Server-Side Rendering (SSR)** với **EJS** để hiển thị thông tin thời tiết trực tiếp từ server, không cần gọi API từ client.
 
 ---
 
 ## ✨ Tính năng
 
-- ✅ Nhập **tên thành phố trên giao diện web**
-- ✅ Hiển thị nhiệt độ, độ ẩm, mô tả thời tiết
-- ✅ Hỗ trợ **tiếng Việt**
+- ✅ Xem thời tiết hiện tại theo tên thành phố.
+- ✅ **Server-Side Rendering**: Tải trang cực nhanh, tốt cho SEO.
+- ✅ **Input Persistence**: Giữ lại tên thành phố sau khi tìm kiếm.
+- ✅ Giao diện đẹp, responsive.
+- ✅ Hỗ trợ **tiếng Việt**.
 
 ---
 
 ## 🛠 Công nghệ sử dụng
 
-- **Node.js**
-- **Express.js** (Backend API)
-- **Axios** (HTTP client)
-- **dotenv** (quản lý biến môi trường)
-- **HTML / CSS / JavaScript** (Frontend)
-- **OpenWeatherMap API**
+- **Node.js**: Runtime môi trường.
+- **Express.js**: Web Framework mạnh mẽ.
+- **EJS**: Template Engine cho SSR.
+- **Axios**: Gọi OpenWeatherMap API từ server.
+- **CSS**: Giao diện (đặt trong thư mục `views` để load cùng template).
 
 ---
 
 ## 📦 Cài đặt
 
-Clone repository:
+1. **Clone repository:**
+   ```bash
+   git clone https://github.com/quan831/callapibyjames.git
+   cd callapibyjames
+   ```
 
-```bash
-git clone https://github.com/quan831/callapibyjames.git
-cd callapibyjames
-```
-
-Cài dependencies:
-
-```bash
-npm install
-```
+2. **Cài đặt dependencies:**
+   ```bash
+   npm install
+   ```
+   *(Bao gồm: express, axios, cors, dotenv, ejs)*
 
 ---
 
-## 🔐 Cấu hình API key
+## 🔐 Cấu hình
 
-1. Đăng ký và lấy API key tại: https://openweathermap.org/api
-2. Tạo file `.env` ở thư mục gốc:
-
-```env
-OPENWEATHER_API_KEY=your_api_key_here
-```
-
-📌 **Lưu ý:** Không commit file `.env` lên GitHub.
+1. Lấy API Key miễn phí tại [OpenWeatherMap](https://openweathermap.org/api).
+2. Tạo file `.env` tại thư mục gốc:
+   ```env
+   OPENWEATHER_API_KEY=your_api_key_here
+   ```
 
 ---
 
 ## ▶️ Chạy ứng dụng
 
-```bash
-npm start
-```
+1. **Khởi động server:**
+   ```bash
+   node index.js
+   # hoặc
+   npm start
+   ```
 
-Mở trình duyệt và truy cập:
-
-```text
-http://localhost:3000
-```
-
----
-
-## 🖥 Giao diện mẫu
-
-- Nhập tên thành phố (vd: `Hanoi`, `Ho Chi Minh`)
-- Nhấn **Xem** để hiển thị thời tiết hiện tại
+2. **Truy cập:**
+   Mở trình duyệt vào địa chỉ: [http://localhost:3000](http://localhost:3000)
 
 ---
 
@@ -78,18 +68,15 @@ http://localhost:3000
 
 ```txt
 callapibyjames/
-│── index.js          # Server Express + Weather API
+│── index.js          # Logic Server (API call + Rendering)
 │── package.json
-│── package-lock.json
-│── .gitignore
-│── .env.example
-│── readme.md
-└── public/
-    │── index.html
-    └── styles.css
+│── .env.example      # Mẫu biến môi trường
+│── views/            # Thư mục giao diện (Template + Assets)
+│   │── index.ejs     # Giao diện chính (Template)
+│   └── style.css     # CSS
+└── readme.md
 ```
 
 ---
 
 > Made with ❤️ by James
-
